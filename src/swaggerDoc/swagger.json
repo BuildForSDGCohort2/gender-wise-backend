@@ -1,0 +1,29 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "Genderwise",
+    "description": "An app that makes gender wise suggestion/corrections for gender sensitive words, promoting gender equality in the process"
+  },
+  "basePath": "/api/v1/",
+  "schemes": ["https", "http"],
+  "securityDefinitions": {
+    "Bearer": {
+      "type": "apiKey",
+      "name": "Authorization",
+      "in": "header"
+    }
+  },
+  "servers": [
+    {
+      "url": "http://localhost:4000/api/v1"
+    },
+    {
+      "url": ""
+    }
+  ],
+  "consumes": ["application/json"],
+  "produces": ["application/json"],
+  "tags": [],
+  "paths": {}
+}
