@@ -16,7 +16,7 @@
 
 ## API Documentation
 
-- [Swagger Documentation on Heroku](https://gender-wise.herokuapp.com)
+- [Swagger Documentation on Heroku](https://gender-wise.herokuapp.com/api/docs)
 
 ## Technologies Used
 
