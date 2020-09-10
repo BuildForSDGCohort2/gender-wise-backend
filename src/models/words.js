@@ -13,7 +13,17 @@ const wordsSchema = new Schema(
     },
     status: {
       type: String,
+      default: 'pending',
       enum: ['pending', 'approved', 'rejected']
+    },
+    twitterPostId: String,
+    upvotes: {
+      type: Number,
+      default: 0
+    },
+    downvotes: {
+      type: Number,
+      defaut: 0
     }
   },
   { timestamps: true }
