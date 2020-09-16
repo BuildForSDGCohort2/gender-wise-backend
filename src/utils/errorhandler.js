@@ -119,9 +119,9 @@ class CustomError {
     // eslint-disable-next-line no-unused-vars
     return (error, req, res, next) => {
       if (error.kind === 'ObjectId') {
-        error = CustomError.notFoundError(
-          'could not find the resource you were looking for.'
-        );
+        error = CustomError.notFoundError({
+          message: 'could not find the resource you were looking for.'
+        });
       }
       // Log error if application error
       if (typeof error !== 'object' || !error.userError) {

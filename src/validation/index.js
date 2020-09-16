@@ -8,5 +8,6 @@ export default {
       tlds: { allow: true }
     })
     .trim()
-    .required()
+    .required(),
+  word: Joi.string().min(2)
 };
