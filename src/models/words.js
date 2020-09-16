@@ -26,7 +26,7 @@ const wordsSchema = new Schema(
     },
     downvotes: {
       type: Number,
-      defaut: 0
+      default: 0
     }
   },
   { timestamps: true }

@@ -29,7 +29,8 @@
     "passport": "^0.4.1",
     "passport-facebook": "^3.0.0",
     "passport-twitter": "^1.0.4",
-    "swagger-ui-express": "^4.1.4"
+    "swagger-ui-express": "^4.1.4",
+    "twit": "^2.2.11"
   },
   "devDependencies": {
     "@babel/cli": "^7.11.6",

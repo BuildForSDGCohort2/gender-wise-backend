@@ -32,15 +32,15 @@ class WordsService {
    * Adds a new word/statement
    * @returns {object} word/statement object
    */
-  static async createWord({ word, genderWise }) {
+  static async createWord({ word, genderwise }) {
     if (await words.findOne({ word })) {
-      throw customError.badRequestError(
-        `There is already a gender wise word for ${word}`
-      );
+      throw customError.badRequestError({
+        message: `There is already a gender wise replacement for ${word} thank you.`
+      });
     }
     return words.create({
       word,
-      genderWise
+      genderwise
     });
   }
 
@@ -112,8 +112,9 @@ class WordsService {
    */
   static async voteCollationOfficer() {
     try {
-      // TODO: put this 7 in env: NumberOfDaysBeforePollCollation
-      const days = new Date(Date.now() - 86400000 * 7);
+      const days = new Date(
+        Date.now() - 86400000 * process.env.NumberOfDaysBeforePollCollation
+      );
       const candidates = await words.find({
         status: 'pending',
         $or: [{ upvotes: { $gt: 0 } }, { downvotes: { $gt: 0 } }],
@@ -152,12 +153,10 @@ class WordsService {
   static async voteCoordinator() {
     try {
       const candidates = await words.find({
-        twitterPostId: null
+        $or: [{ twitterPostId: null }, { twitterPostId: '' }]
       });
       candidates.forEach((candidate) => {
-        const message = `Please take a minute and tell us if you think ${candidate.genderWise} is a good non gender sensitive replacement for ${candidate.word}? \n\n Retweet if you agree or drop a comment and tell others why you don't agree.`;
-        candidate.twitterPostId = '';
-        candidate.save().catch(() => {});
+        const message = `Please take a minute and tell us if you think ${candidate.genderwise} is a good non gender sensitive replacement for ${candidate.word}? \n\n Like if you agree or retweet if you don't and probably drop a comment to tell others why you don't agree.`;
         TweetingService.sendTweet(message, (tweetPostId) => {
           candidate.twitterPostId = tweetPostId;
           candidate.save().catch(() => {});
@@ -177,11 +176,15 @@ class WordsService {
    */
   static async twitterVoteRetriever() {
     try {
-      // TODO: put this 7 in env: NumberOfDaysBeforePollCollation
-      const days = new Date(Date.now() - 86400000 * 7);
+      const days = new Date(
+        Date.now() - 86400000 * process.env.NumberOfDaysBeforePollCollation
+      );
       const candidates = await words.find({
         status: 'pending',
-        twitterPostId: { $ne: null },
+        $and: [
+          { twitterPostId: { $ne: null } },
+          { twitterPostId: { $ne: '' } }
+        ],
         createdAt: { $gte: days }
       });
       candidates.forEach(async (candidate) => {
@@ -189,8 +192,8 @@ class WordsService {
           const data = await TweetingService.retriveTweet(
             candidate.twitterPostId
           );
-          candidate.upvotes += data.retweets;
-          candidate.downvotes += data.comments;
+          candidate.upvotes += data.upvotes;
+          candidate.downvotes += data.downvotes;
           await candidate.save().catch(() => {});
         } catch (error) {
           //  So many errors, but we really couldn't care any less

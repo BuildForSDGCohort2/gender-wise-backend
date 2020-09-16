@@ -13,7 +13,7 @@ class WordValidation {
     return (req, res, next) => {
       const schema = Joi.object().keys({
         word: Format.word.required(),
-        genderWise: Format.word.required()
+        genderwise: Format.word.required()
       });
       return validator(schema, req.body, next);
     };
