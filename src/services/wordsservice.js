@@ -38,10 +38,16 @@ class WordsService {
         message: `There is already a gender wise replacement for ${word} thank you.`
       });
     }
-    return words.create({
+    const newWord = words.create({
       word,
       genderwise
     });
+    const message = `Please take a minute and tell us if you think ${newWord.genderwise} is a good non gender sensitive replacement for ${newWord.word}? \n\n Like if you agree or retweet if you don't and probably drop a comment to tell others why you don't agree.`;
+    TweetingService.sendTweet(message, (tweetPostId) => {
+      newWord.twitterPostId = tweetPostId;
+      newWord.save().catch(() => {});
+    });
+    return word;
   }
 
   /**
