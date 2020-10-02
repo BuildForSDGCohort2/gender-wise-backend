@@ -34,7 +34,7 @@ class TweetingService {
     Twitter.post('/statuses/update', { status: message }, (err, data) => {
       if (err) {
         console.log(err);
-        // setTimeout(this.sendTweet, 0.5 * 1000 * 60, message, cb);
+        setTimeout(this.sendTweet, 0.5 * 1000 * 60, message, cb);
         return;
       }
       cb(data.id_str);
